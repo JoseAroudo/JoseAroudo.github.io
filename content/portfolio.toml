@@ -1,0 +1,351 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Única fuente de verdad del sitio. Edita este archivo y corre `python build.py`.
+#  El contrato (pipeline/contract.py) valida tipos, fechas y que cada herramienta
+#  citada en un proyecto exista en alguna etapa del stack.
+#
+#  Idiomas: el sitio se publica en inglés (raíz), español (/es/) y portugués (/pt/).
+#  Un texto igual en los tres idiomas va como cadena normal; uno traducido va
+#  con una clave por idioma:  titulo.en = "…"   titulo.es = "…"   titulo.pt = "…"
+#  Si falta una de las tres, el build falla y dice cuál.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Mientras sea true, el sitio muestra una franja avisando que el contenido es de
+# ejemplo. Pásalo a false cuando hayas reemplazado proyectos, cifras y fechas.
+borrador = false
+
+[perfil]
+nombre         = "Jose Aroudo Junior De Assis Pinedo"
+rol.en         = "Data engineer · Software engineer"
+rol.es         = "Ingeniero de datos · Ingeniero de software"
+rol.pt         = "Engenheiro de dados · Engenheiro de software"
+titulo.en      = "Systems & Computer Engineering (final stage)"
+titulo.es      = "Ing. de Sistemas y Computación (etapa final)"
+titulo.pt      = "Eng. de Sistemas e Computação (etapa final)"
+ubicacion.en   = "Pereira, Colombia"
+ubicacion.es   = "Pereira, Colombia"
+ubicacion.pt   = "Pereira, Colômbia"
+coordenadas.en = "4.8133° N · 75.6961° W"
+coordenadas.es = "4.8133° N · 75.6961° O"
+coordenadas.pt = "4.8133° N · 75.6961° O"
+disponible     = true
+idiomas        = [
+  { en = "Spanish (native)", es = "Español (nativo)", pt = "Espanhol (nativo)" },
+  { en = "Portuguese C1", es = "Portugués C1", pt = "Português C1" },
+  { en = "English B2", es = "Inglés B2", pt = "Inglês B2" },
+]
+enfoque.en     = "I build pipelines nobody has to babysit."
+enfoque.es     = "Construyo pipelines que nadie tiene que vigilar."
+enfoque.pt     = "Construo pipelines que ninguém precisa vigiar."
+resumen.en     = """
+Final-year Systems and Computer Engineering student (UTP) with two years of \
+experience in software and data. At Enel Colombia I built ETL processes in \
+Python and SQL on Oracle, data-quality validators for regulatory reports and \
+automations that removed manual work. I'm currently going deeper into Airflow, \
+medallion architecture and Azure. Open to remote work or on-site in Pereira."""
+resumen.es     = """
+Estudiante en etapa final de Ingeniería de Sistemas y Computación (UTP) con dos \
+años de experiencia en software y datos. En Enel Colombia construí procesos ETL \
+en Python y SQL sobre Oracle, validadores de calidad de datos para reportes \
+regulatorios y automatizaciones que eliminaron tareas manuales. Hoy profundizo \
+en Airflow, arquitectura medallion y Azure. Disponible para trabajo remoto o \
+presencial en Pereira."""
+resumen.pt     = """
+Estudante na etapa final de Engenharia de Sistemas e Computação (UTP) com dois \
+anos de experiência em software e dados. Na Enel Colombia construí processos ETL \
+em Python e SQL sobre Oracle, validadores de qualidade de dados para relatórios \
+regulatórios e automações que eliminaram tarefas manuais. Hoje me aprofundo em \
+Airflow, arquitetura medallion e Azure. Disponível para trabalho remoto ou \
+presencial em Pereira."""
+
+[contacto]
+email    = "josearoudo25@gmail.com"
+github   = "https://github.com/JoseAroudo"
+linkedin = "https://www.linkedin.com/in/josearoudo/"
+cv       = "static/CV___Data_Engineer_general.pdf"
+
+# Cifras grandes bajo el encabezado. Tres o cuatro, y que sean defendibles.
+[[cifras]]
+valor.en    = "2 yrs"
+valor.es    = "2 años"
+valor.pt    = "2 anos"
+etiqueta.en = "of experience in software and data"
+etiqueta.es = "de experiencia en software y datos"
+etiqueta.pt = "de experiência em software e dados"
+
+[[cifras]]
+valor       = "30 → 5 min"
+etiqueta.en = "rate-loading process after the ETL to Oracle"
+etiqueta.es = "proceso de tarifas tras el ETL a Oracle"
+etiqueta.pt = "processo de tarifas após o ETL para Oracle"
+
+[[cifras]]
+valor       = "100 %"
+etiqueta.en = "monthly KPI compliance with automated alerts"
+etiqueta.es = "cumplimiento del KPI mensual con alertas automáticas"
+etiqueta.pt = "cumprimento do KPI mensal com alertas automáticos"
+
+[[cifras]]
+valor       = "4"
+etiqueta.en = "SUI regulatory formats (TC1, TC3, T15, TC6)"
+etiqueta.es = "formatos regulatorios del SUI (TC1, TC3, T15, TC6)"
+etiqueta.pt = "formatos regulatórios do SUI (TC1, TC3, T15, TC6)"
+
+# ── Stack ────────────────────────────────────────────────────────────────────
+# Cada etapa es una columna del grafo. Las aristas NO se escriben a mano:
+# se derivan de qué herramientas aparecen juntas en cada proyecto.
+# Una herramienta con nombre traducido se escribe como { en, es, pt }; los
+# proyectos pueden citarla por cualquiera de sus nombres.
+
+[[etapas]]
+nombre.en    = "Sources"
+nombre.es    = "Fuentes"
+nombre.pt    = "Fontes"
+herramientas = ["Excel · CSV", { en = "REST APIs", es = "APIs REST", pt = "APIs REST" }, "SharePoint"]
+
+[[etapas]]
+nombre.en    = "Ingestion"
+nombre.es    = "Ingesta"
+nombre.pt    = "Ingestão"
+herramientas = ["Python", "SQL*Loader", { en = "Batch scripts", es = "Scripts Batch", pt = "Scripts Batch" }]
+
+[[etapas]]
+nombre.en    = "Storage"
+nombre.es    = "Almacenamiento"
+nombre.pt    = "Armazenamento"
+herramientas = ["Oracle", "PostgreSQL", "MinIO (S3)", "MySQL"]
+
+[[etapas]]
+nombre.en    = "Transformation"
+nombre.es    = "Transformación"
+nombre.pt    = "Transformação"
+herramientas = ["SQL", "pandas", { en = "Neural network", es = "Red neuronal", pt = "Rede neural" }]
+
+[[etapas]]
+nombre.en    = "Operations"
+nombre.es    = "Operación"
+nombre.pt    = "Operação"
+herramientas = ["Apache Airflow", "Docker Compose", "Azure Pipelines", "SonarQube", "Power Automate"]
+
+[[etapas]]
+nombre.en    = "Consumption"
+nombre.es    = "Consumo"
+nombre.pt    = "Consumo"
+herramientas = [{ en = "SUI reports", es = "Reportes SUI", pt = "Relatórios SUI" }, "C# · .NET", "Django · React", "JavaScript", "Teams"]
+
+# ── Proyectos ────────────────────────────────────────────────────────────────
+# Se muestran en el orden en que aparecen aquí: de mayor a menor relevancia.
+# `estado` (opcional) reemplaza al año en la tarjeta, p. ej. "En desarrollo".
+
+[[proyectos]]
+titulo.en    = "Rate ETL from Excel to Oracle"
+titulo.es    = "ETL de tarifas de Excel a Oracle"
+titulo.pt    = "ETL de tarifas do Excel para Oracle"
+anio         = 2026
+estado       = "Enel · 2025–26"
+tipo.en      = "ETL · Production"
+tipo.es      = "ETL · Producción"
+tipo.pt      = "ETL · Produção"
+resumen.en   = "A process that extracts rates from Excel, transforms and validates them, and loads them into Oracle (INFOREG) for Enel Grids' commercial cycle."
+resumen.es   = "Proceso que extrae las tarifas desde Excel, las transforma y valida, y las carga en Oracle (INFOREG) para el ciclo comercial de Enel Grids."
+resumen.pt   = "Processo que extrai as tarifas do Excel, as transforma e valida, e as carrega no Oracle (INFOREG) para o ciclo comercial da Enel Grids."
+problema.en  = "Loading rates was a manual process of about 30 minutes before the data reached the regulatory database."
+problema.es  = "La carga de tarifas era un proceso manual de unos 30 minutos antes de llegar a la base regulatoria."
+problema.pt  = "A carga de tarifas era um processo manual de cerca de 30 minutos antes de chegar à base regulatória."
+solucion.en  = "ETL in Python with pandas and openpyxl, validations before loading, and an Oracle load with SQL*Loader driven by Batch scripts. Complemented by a subsidies and contributions table modeled in Oracle and loaded with SQL (PIVOT) from billing data."
+solucion.es  = "ETL en Python con pandas y openpyxl, validaciones antes del cargue y carga a Oracle con SQL*Loader orquestada por scripts Batch. Se complementa con una tabla de subsidios y contribuciones modelada en Oracle y cargada con SQL (PIVOT) desde la facturación."
+solucion.pt  = "ETL em Python com pandas e openpyxl, validações antes da carga e carga no Oracle com SQL*Loader orquestrada por scripts Batch. Complementado por uma tabela de subsídios e contribuições modelada no Oracle e carregada com SQL (PIVOT) a partir do faturamento."
+resultado.en = "The process went from 30 to 5 minutes and was documented and handed over to the team."
+resultado.es = "El proceso pasó de 30 a 5 minutos y quedó documentado y transferido al equipo."
+resultado.pt = "O processo passou de 30 para 5 minutos e ficou documentado e transferido para a equipe."
+herramientas = ["Excel · CSV", "Python", "SQL*Loader", "Batch scripts", "Oracle", "pandas", "SQL", "SUI reports"]
+metricas     = [
+  { valor = "30 → 5", etiqueta = { en = "minutes per load", es = "minutos por carga", pt = "minutos por carga" } },
+]
+enlaces      = []
+
+[[proyectos]]
+titulo.en    = "Medallion financial pipeline with neural-network quality control"
+titulo.es    = "Pipeline financiero medallion con control de calidad por red neuronal"
+titulo.pt    = "Pipeline financeiro medallion com controle de qualidade por rede neural"
+anio         = 2026
+estado.en    = "In progress"
+estado.es    = "En desarrollo"
+estado.pt    = "Em desenvolvimento"
+tipo         = "Batch · Medallion"
+resumen.en   = "Bronze/Silver/Gold architecture with U.S. Federal Reserve economic series (interest rates, credit delinquency)."
+resumen.es   = "Arquitectura Bronze/Silver/Gold con series económicas de la Reserva Federal de EE. UU. (tasas de interés, morosidad crediticia)."
+resumen.pt   = "Arquitetura Bronze/Silver/Gold com séries econômicas do Federal Reserve dos EUA (taxas de juros, inadimplência de crédito)."
+problema.en  = "Economic series arrive with gaps and outliers that contaminate any downstream analysis."
+problema.es  = "Las series económicas llegan con huecos y valores atípicos que contaminan cualquier análisis aguas abajo."
+problema.pt  = "As séries econômicas chegam com lacunas e valores atípicos que contaminam qualquer análise a jusante."
+solucion.en  = "Ingestion from the FRED API orchestrated with Apache Airflow, Bronze/Silver/Gold layers on MinIO (S3) and PostgreSQL, all spun up with Docker Compose; a neural network holds back anomalous records before the Gold layer."
+solucion.es  = "Ingesta desde la API FRED orquestada con Apache Airflow, capas Bronze/Silver/Gold sobre MinIO (S3) y PostgreSQL, todo levantado con Docker Compose; una red neuronal retiene los registros anómalos antes de la capa Gold."
+solucion.pt  = "Ingestão a partir da API FRED orquestrada com Apache Airflow, camadas Bronze/Silver/Gold sobre MinIO (S3) e PostgreSQL, tudo levantado com Docker Compose; uma rede neural retém os registros anômalos antes da camada Gold."
+resultado.en = "A clean Gold layer and an environment reproducible locally with Docker Compose."
+resultado.es = "Una capa Gold depurada y un entorno reproducible localmente con Docker Compose."
+resultado.pt = "Uma camada Gold depurada e um ambiente reproduzível localmente com Docker Compose."
+herramientas = ["REST APIs", "Python", "MinIO (S3)", "PostgreSQL", "pandas", "Neural network", "Apache Airflow", "Docker Compose"]
+metricas     = [
+  { valor = "3", etiqueta = { en = "layers: bronze · silver · gold", es = "capas: bronze · silver · gold", pt = "camadas: bronze · silver · gold" } },
+]
+enlaces      = []
+
+[[proyectos]]
+titulo.en    = "Quality validator for SUI regulatory formats"
+titulo.es    = "Validador de calidad para formatos regulatorios del SUI"
+titulo.pt    = "Validador de qualidade para formatos regulatórios do SUI"
+anio         = 2026
+estado       = "Enel · 2025–26"
+tipo.en      = "Data quality"
+tipo.es      = "Calidad de datos"
+tipo.pt      = "Qualidade de dados"
+resumen.en   = "A Python validator for the SUI's TC1 and TC3 formats (SSPD Resolution 20212200012515 of 2021) that catches inconsistencies before the official upload."
+resumen.es   = "Validador en Python para los formatos TC1 y TC3 del SUI (Res. SSPD 20212200012515 de 2021) que detecta inconsistencias antes del cargue oficial."
+resumen.pt   = "Validador em Python para os formatos TC1 e TC3 do SUI (Res. SSPD 20212200012515 de 2021) que detecta inconsistências antes do envio oficial."
+problema.en  = "Inconsistencies in the regulatory formats were caught late, close to the official upload."
+problema.es  = "Las inconsistencias en los formatos regulatorios se detectaban tarde, cerca del cargue oficial."
+problema.pt  = "As inconsistências nos formatos regulatórios eram detectadas tarde, perto do envio oficial."
+solucion.en  = "Validation rules in Python and pandas over each format's files, reporting inconsistencies before submission."
+solucion.es  = "Reglas de validación en Python y pandas sobre los archivos de cada formato, con reporte de las inconsistencias antes de enviar."
+solucion.pt  = "Regras de validação em Python e pandas sobre os arquivos de cada formato, com relatório das inconsistências antes do envio."
+resultado.en = "The validator was handed over, with training, to the Activations Planning and Billing Operations teams."
+resultado.es = "El validador se transfirió con capacitación a Planeación de Activaciones y Billing Operations."
+resultado.pt = "O validador foi transferido, com treinamento, para Planejamento de Ativações e Billing Operations."
+herramientas = ["Excel · CSV", "Python", "pandas", "SUI reports"]
+metricas     = [
+  { valor = "2", etiqueta = { en = "teams adopted the validator", es = "áreas adoptaron el validador", pt = "áreas adotaram o validador" } },
+]
+enlaces      = []
+
+[[proyectos]]
+titulo.en    = "E-commerce backend in .NET on Azure"
+titulo.es    = "Backend de comercio electrónico en .NET sobre Azure"
+titulo.pt    = "Backend de e-commerce em .NET no Azure"
+anio         = 2026
+estado.en    = "In progress"
+estado.es    = "En desarrollo"
+estado.pt    = "Em desenvolvimento"
+tipo.en      = "Backend · Cloud · CI/CD"
+tipo.es      = "Backend · Nube · CI/CD"
+tipo.pt      = "Backend · Nuvem · CI/CD"
+resumen.en   = "An e-commerce API with PostgreSQL on Azure, continuous integration and delivery, and static code analysis."
+resumen.es   = "API de comercio electrónico con PostgreSQL en Azure, integración y despliegue continuos y análisis estático de código."
+resumen.pt   = "API de e-commerce com PostgreSQL no Azure, integração e entrega contínuas e análise estática de código."
+solucion.en  = "MVC architecture with the repository pattern and DTOs in C#/.NET, PostgreSQL on Azure, CI/CD with Azure Repos and Azure Pipelines, and SonarQube in the pipeline."
+solucion.es  = "Arquitectura MVC con patrón repositorio y DTOs en C#/.NET, PostgreSQL en Azure, CI/CD con Azure Repos y Azure Pipelines, y SonarQube en el pipeline."
+solucion.pt  = "Arquitetura MVC com padrão repositório e DTOs em C#/.NET, PostgreSQL no Azure, CI/CD com Azure Repos e Azure Pipelines, e SonarQube no pipeline."
+herramientas = ["PostgreSQL", "Azure Pipelines", "SonarQube", "C# · .NET"]
+metricas     = []
+enlaces      = []
+
+[[proyectos]]
+titulo.en    = "Automated due-date alerts in Teams"
+titulo.es    = "Alertas automáticas de vencimiento en Teams"
+titulo.pt    = "Alertas automáticos de vencimento no Teams"
+anio         = 2026
+estado       = "Enel · 2025–26"
+tipo.en      = "Automation"
+tipo.es      = "Automatización"
+tipo.pt      = "Automação"
+resumen.en   = "A flow that notifies Teams when a request is about to expire, replacing a daily manual follow-up."
+resumen.es   = "Flujo que avisa en Teams cuando una solicitud está por vencer, reemplazando un seguimiento manual diario."
+resumen.pt   = "Fluxo que avisa no Teams quando uma solicitação está prestes a vencer, substituindo um acompanhamento manual diário."
+problema.en  = "Due dates were tracked by hand every day."
+problema.es  = "El seguimiento de vencimientos se hacía a mano todos los días."
+problema.pt  = "O acompanhamento dos vencimentos era feito à mão todos os dias."
+solucion.en  = "A Power Automate flow that checks requests and sends due-date alerts to Teams."
+solucion.es  = "Flujo en Power Automate que revisa las solicitudes y envía alertas de vencimiento a Teams."
+solucion.pt  = "Fluxo no Power Automate que verifica as solicitações e envia alertas de vencimento ao Teams."
+resultado.en = "Helped sustain 100 % compliance with the monthly KPI."
+resultado.es = "Ayudó a sostener el 100 % de cumplimiento del KPI mensual."
+resultado.pt = "Ajudou a manter 100 % de cumprimento do KPI mensal."
+herramientas = ["SharePoint", "Power Automate", "Teams"]
+metricas     = [
+  { valor = "100 %", etiqueta = { en = "KPI compliance", es = "cumplimiento del KPI", pt = "cumprimento do KPI" } },
+]
+enlaces      = []
+
+[[proyectos]]
+titulo       = "FitMarket"
+anio         = 2025
+tipo.en      = "Web · University project"
+tipo.es      = "Web · Proyecto universitario"
+tipo.pt      = "Web · Projeto universitário"
+resumen.en   = "An e-commerce site built with Django, React and Stripe, where I was Product Owner and led the adoption of Scrum."
+resumen.es   = "E-commerce construido con Django, React y Stripe, donde fui Product Owner y lideré la implementación de Scrum."
+resumen.pt   = "E-commerce construído com Django, React e Stripe, onde fui Product Owner e liderei a implementação do Scrum."
+herramientas = ["REST APIs", "Python", "Django · React"]
+metricas     = []
+enlaces      = []
+
+[[proyectos]]
+titulo.en    = "QR access control"
+titulo.es    = "Control de acceso con QR"
+titulo.pt    = "Controle de acesso com QR"
+anio         = 2024
+tipo.en      = "Web · University project"
+tipo.es      = "Web · Proyecto universitario"
+tipo.pt      = "Web · Projeto universitário"
+resumen.en   = "An access-control system using QR codes; I gathered and documented the requirements (SRS and use cases)."
+resumen.es   = "Sistema de control de acceso con códigos QR; levanté y documenté los requisitos (ERS y casos de uso)."
+resumen.pt   = "Sistema de controle de acesso com códigos QR; levantei e documentei os requisitos (ERS e casos de uso)."
+herramientas = ["MySQL", "JavaScript"]
+metricas     = []
+enlaces      = []
+
+# ── Trayectoria ──────────────────────────────────────────────────────────────
+# tipo: "trabajo" o "estudio". Fechas en formato AAAA-MM; fin vacío = actualidad.
+# `pausas` (opcional): periodos sin actividad dentro del hito; se dibujan como hueco.
+
+[[trayectoria]]
+tipo       = "trabajo"
+rol.en     = "Data & Automation Intern"
+rol.es     = "Practicante de Datos y Automatización"
+rol.pt     = "Estagiário de Dados e Automação"
+lugar.en   = "Enel Colombia S.A. E.S.P. · Enel Grids, Bogotá (hybrid)"
+lugar.es   = "Enel Colombia S.A. E.S.P. · Enel Grids, Bogotá (híbrido)"
+lugar.pt   = "Enel Colombia S.A. E.S.P. · Enel Grids, Bogotá (híbrido)"
+inicio     = "2025-08"
+fin        = "2026-07"
+detalle.en = "Commercial Cycle Information. ETL in Python and SQL on Oracle, quality validators for SUI regulatory formats (TC1, TC3, T15, TC6), energy-customer profiling and automations with Power Automate."
+detalle.es = "Información de Ciclo Comercial. ETL en Python y SQL sobre Oracle, validadores de calidad para formatos regulatorios del SUI (TC1, TC3, T15, TC6), caracterización de usuarios de energía y automatizaciones con Power Automate."
+detalle.pt = "Informação do Ciclo Comercial. ETL em Python e SQL sobre Oracle, validadores de qualidade para formatos regulatórios do SUI (TC1, TC3, T15, TC6), caracterização de usuários de energia e automações com Power Automate."
+
+[[trayectoria]]
+tipo       = "trabajo"
+rol.en     = "Software Developer"
+rol.es     = "Desarrollador de Software"
+rol.pt     = "Desenvolvedor de Software"
+lugar.en   = "Universidad Tecnológica de Pereira · Engineering PhD Office"
+lugar.es   = "Universidad Tecnológica de Pereira · Oficina del Doctorado en Ingenierías"
+lugar.pt   = "Universidad Tecnológica de Pereira · Secretaria do Doutorado em Engenharias"
+inicio     = "2024-08"
+fin        = "2025-08"
+detalle.en = "Data-capture apps and forms in AppSheet to centralize and visualize the office's information; technical documentation, process manuals and semester reports."
+detalle.es = "Apps y formularios de captura de datos en AppSheet para centralizar y visualizar la información de la oficina; documentación técnica, manuales de proceso e informes semestrales."
+detalle.pt = "Apps e formulários de captura de dados no AppSheet para centralizar e visualizar as informações do escritório; documentação técnica, manuais de processo e relatórios semestrais."
+
+[[trayectoria]]
+tipo       = "estudio"
+rol.en     = "Full-Stack Programming Fundamentals"
+rol.es     = "Fundamentos de Programador Full-Stack"
+rol.pt     = "Fundamentos de Programador Full-Stack"
+lugar.en   = "Universidad Tecnológica de Pereira · complementary course"
+lugar.es   = "Universidad Tecnológica de Pereira · curso complementario"
+lugar.pt   = "Universidad Tecnológica de Pereira · curso complementar"
+inicio     = "2024-07"
+fin        = "2024-07"
+detalle    = ""
+
+[[trayectoria]]
+tipo       = "estudio"
+rol.en     = "Systems and Computer Engineering"
+rol.es     = "Ingeniería de Sistemas y Computación"
+rol.pt     = "Engenharia de Sistemas e Computação"
+lugar      = "Universidad Tecnológica de Pereira"
+inicio     = "2019-02"
+fin        = ""
+pausas     = [{ inicio = "2021-01", fin = "2021-12" }]
+detalle.en = "In progress, final stage. Took a break from studies in 2021."
+detalle.es = "En curso, etapa final. Pausa en los estudios durante 2021."
+detalle.pt = "Em andamento, etapa final. Pausa nos estudos durante 2021."

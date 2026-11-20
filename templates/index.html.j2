@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ perfil.nombre }} — {{ perfil.rol }}</title>
+  <meta name="description" content="{{ perfil.rol }} {{ ui.in }} {{ perfil.ubicacion }}. {{ perfil.enfoque }}">
+  <meta property="og:title" content="{{ perfil.nombre }} — {{ perfil.rol }}">
+  <meta property="og:description" content="{{ perfil.enfoque }}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{{ {'en': 'en_US', 'es': 'es_CO', 'pt': 'pt_BR'}[lang] }}">
+{% for l in langs %}
+  <link rel="alternate" hreflang="{{ l.code }}" href="{{ l.href }}">
+{% endfor %}
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317140e'/%3E%3Cpath d='M6 10h8M6 22h8M18 16h8' stroke='%23efe9dd' stroke-width='3'/%3E%3Cpath d='M14 10c4 0 0 6 4 6M14 22c4 0 0-6 4-6' stroke='%23d4421a' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+  <script>
+    // Antes de pintar, para que el tema no parpadee.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("tema"); } catch (e) {}
+      var dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    })();
+{% if not root %}
+    // En la raíz (inglés), si el visitante ya eligió otro idioma, se lo respetamos.
+    (function () {
+      var lang = null;
+      try { lang = localStorage.getItem("idioma"); } catch (e) {}
+      if (lang === "es" || lang === "pt") { location.replace(lang + "/" + location.hash); }
+    })();
+{% endif %}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap">
+  <link rel="stylesheet" href="{{ root }}static/site.css?v={{ run.id }}">
+</head>
+<body>
+{% if borrador %}
+  <p class="draft"><b>{{ ui.draft_tag }}</b> {{ ui.draft }}</p>
+{% endif %}
+
+  <header class="bar">
+    <div class="wrap bar__in">
+      <a class="bar__id" href="#top">{{ nombre_corto }}<span>/portfolio</span></a>
+      <nav class="bar__nav" aria-label="{{ ui.sections }}">
+        <a href="#stack"><i>01</i> {{ ui.nav_stack }}</a>
+        <a href="#proyectos"><i>02</i> {{ ui.nav_projects }}</a>
+        <a href="#trayectoria"><i>03</i> {{ ui.nav_path }}</a>
+        <a href="#contacto"><i>04</i> {{ ui.nav_contact }}</a>
+      </nav>
+      <div class="bar__run">
+        <span class="run" title="{{ ui.run_title }}"><span class="run__dot"></span>run {{ run.id }}</span>
+        <nav class="lang" aria-label="{{ ui.lang }}">
+          {% for l in langs %}
+          <a href="{{ l.href }}" hreflang="{{ l.code }}" lang="{{ l.code }}" title="{{ l.name }}" data-lang="{{ l.code }}"{% if l.code == lang %} aria-current="page"{% endif %}>{{ l.code|upper }}</a>
+          {% endfor %}
+        </nav>
+        <button class="theme" type="button" id="theme" aria-label="{{ ui.theme }}">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <p class="eyebrow">
+        <span>{{ perfil.titulo }}</span>
+        <span>{{ perfil.ubicacion }}{% if perfil.coordenadas %} <em>{{ perfil.coordenadas }}</em>{% endif %}</span>
+      </p>
+      <h1>{{ perfil.nombre }}</h1>
+      <p class="hero__rol"><span>{{ perfil.rol }}</span></p>
+
+      <div class="hero__grid">
+        <div class="hero__text">
+          <p class="hero__lead">{{ perfil.enfoque }}</p>
+          <p class="hero__sum">{{ perfil.resumen }}</p>
+          <p class="hero__go">
+            <a class="go" href="#proyectos">{{ ui.see_projects }} <span aria-hidden="true">↓</span></a>
+            <a class="go" href="#contacto">{{ ui.write_me }} <span aria-hidden="true">→</span></a>
+          </p>
+        </div>
+
+        <table class="describe">
+          <caption><span aria-hidden="true">&gt;</span> {{ ui.describe }}</caption>
+          <thead><tr><th>{{ ui.col_column }}</th><th>{{ ui.col_type }}</th><th>{{ ui.col_value }}</th></tr></thead>
+          <tbody>
+          {% for columna, tipo, valor in describe %}
+            <tr>
+              <th scope="row">{{ columna }}</th>
+              <td>{{ tipo }}</td>
+              <td{% if tipo == "BOOLEAN" %} class="is-{{ valor|lower }}"{% endif %}>{{ valor }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if cifras %}
+      <ul class="cifras">
+        {% for c in cifras %}
+        <li><b>{{ c.valor }}</b><span>{{ c.etiqueta }}</span></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+
+    <section class="sec wrap" id="stack">
+      <header class="sec__head">
+        <span class="sec__n">01</span>
+        <h2>{{ ui.stack_h }}</h2>
+        <p class="sec__note">{{ dag.nodes }} {{ ui.nodes }} · {{ dag.edges }} {{ ui.edges }}</p>
+      </header>
+      <p class="sec__intro">{{ ui.stack_intro }}</p>
+      <div class="dagwrap" tabindex="0" role="group" aria-label="{{ ui.dag_scroll }}">
+        {{ dag_svg }}
+      </div>
+      <p class="hint"><span class="hint__key"></span> {{ ui.hint }}</p>
+    </section>
+
+    <section class="sec wrap" id="proyectos">
+      <header class="sec__head">
+        <span class="sec__n">02</span>
+        <h2>{{ ui.projects_h }}</h2>
+        <p class="sec__note">{{ proyectos|length }} {{ ui.rows }} · {{ ui.order }}</p>
+      </header>
+
+      {% for item in proyectos %}
+      {% set p = item.p %}
+      <article class="proj" data-p="{{ p.slug }}">
+        <div class="proj__meta">
+          <span class="proj__id">P-{{ "%02d"|format(item.n) }}</span>
+          <span>{{ p.estado or p.anio }}</span>
+          <span>{{ p.tipo }}</span>
+        </div>
+
+        <div class="proj__body">
+          <h3>{{ p.titulo }}</h3>
+          <p class="proj__sum">{{ p.resumen }}</p>
+          <ul class="path" aria-label="{{ ui.data_path }}">
+            {% for t in item.tools %}
+            <li data-tool="{{ t.id }}">{{ t.nombre }}</li>
+            {% endfor %}
+          </ul>
+          {% if p.problema or p.solucion or p.resultado %}
+          <details>
+            <summary>{{ ui.datasheet }}</summary>
+            <dl class="ficha">
+              {% if p.problema %}<div><dt>{{ ui.problem }}</dt><dd>{{ p.problema }}</dd></div>{% endif %}
+              {% if p.solucion %}<div><dt>{{ ui.solution }}</dt><dd>{{ p.solucion }}</dd></div>{% endif %}
+              {% if p.resultado %}<div><dt>{{ ui.result }}</dt><dd>{{ p.resultado }}</dd></div>{% endif %}
+            </dl>
+          </details>
+          {% endif %}
+          {% for e in p.enlaces %}
+          <a class="go go--sm" href="{{ e.url }}" rel="noopener">{{ e.texto }} <span aria-hidden="true">↗</span></a>
+          {% endfor %}
+        </div>
+
+        {% if p.metricas %}
+        <ul class="proj__nums">
+          {% for m in p.metricas %}
+          <li><b>{{ m.valor }}</b><span>{{ m.etiqueta }}</span></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </section>
+
+    {% if tl["items"] %}
+    <section class="sec wrap" id="trayectoria">
+      <header class="sec__head">
+        <span class="sec__n">03</span>
+        <h2>{{ ui.path_h }}</h2>
+        <p class="sec__note"><span class="key key--trabajo"></span> {{ ui.work }} <span class="key key--estudio"></span> {{ ui.study }}</p>
+      </header>
+
+      <div class="tl" style="--years: {{ tl.years|length }}">
+        <div class="tl__row tl__row--axis" aria-hidden="true">
+          <span></span>
+          <div class="tl__axis">{% for y in tl.years %}<span>’{{ "%02d"|format(y % 100) }}</span>{% endfor %}</div>
+        </div>
+        {% for it in tl["items"] %}
+        <div class="tl__row">
+          <div class="tl__label">
+            <h3>{{ it.hito.rol }}</h3>
+            <p class="tl__org">{{ it.hito.lugar }}</p>
+            <p class="tl__when">{{ it.periodo }}</p>
+            {% if it.hito.detalle %}<p class="tl__det">{{ it.hito.detalle }}</p>{% endif %}
+          </div>
+          <div class="tl__track" aria-hidden="true">
+            {% for b in it.bars %}
+            <span class="tl__bar tl__bar--{{ it.hito.tipo }}{% if b.actual %} is-now{% endif %}" style="--s: {{ b.s }}%; --w: {{ b.w }}%"{% if b.actual %} data-now="{{ ui.now }}"{% endif %}></span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="sec wrap" id="contacto">
+      <header class="sec__head">
+        <span class="sec__n">04</span>
+        <h2>{{ ui.contact_h }}</h2>
+        <p class="sec__note">{{ perfil.ubicacion }}</p>
+      </header>
+
+      <div class="contact">
+        <p class="contact__lead">{{ ui.contact_lead }} <a href="mailto:{{ contacto.email }}">{{ ui.contact_cta }}</a></p>
+
+        <div class="query">
+<pre class="query__sql" aria-hidden="true"><b>SELECT</b> {{ ui.sql_select }}
+<b>FROM</b>   {{ ui.sql_from }}
+<b>WHERE</b>  {{ ui.sql_where }} = <i>{{ "TRUE" if perfil.disponible else "FALSE" }}</i>;</pre>
+          {% set filas = [
+            (ui.ch_email, contacto.email, "mailto:" ~ contacto.email),
+            ("github", contacto.github|replace("https://", ""), contacto.github),
+            ("linkedin", contacto.linkedin|replace("https://www.", "")|replace("https://", ""), contacto.linkedin),
+            ("cv", ui.download_pdf, cv_url),
+          ]|selectattr(2)|list %}
+          <ul class="query__rows">
+            {% for canal, texto, url in filas %}
+            <li>
+              <span>{{ canal }}</span>
+              <a href="{{ url }}"{% if url.startswith("http") %} rel="noopener me"{% endif %}>{{ texto }}</a>
+              {% if url.startswith("mailto:") %}<button type="button" class="copy" data-copy="{{ contacto.email }}" data-done="{{ ui.copied_btn }}">{{ ui.copy_btn }}</button>{% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+          <p class="query__count">({{ filas|length }} {{ ui.rows }})</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><div class="foot">
+    <div class="foot__log">
+      <p class="foot__title">{{ ui.foot_title }}</p>
+<pre>{% for paso, mensaje in log %}
+<b>[{{ "%-9s"|format(paso) }}]</b> {{ mensaje }}
+{% endfor %}
+<span class="ok">ok</span> · run {{ run.id }} · {{ run.at }}</pre>
+    </div>
+    <p class="foot__sign">© {{ run.at[:4] }} {{ perfil.nombre }}<br>{{ ui.foot_sign }}</p>
+  </div></footer>
+
+  <script src="{{ root }}static/site.js?v={{ run.id }}" defer></script>
+{% if dev %}
+  <script>
+    // Solo en `build.py serve`: recarga cuando cambia el run id.
+    setInterval(function () {
+      fetch("{{ root }}build.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (b) {
+        if (b.id !== "{{ run.id }}") location.reload();
+      }).catch(function () {});
+    }, 800);
+  </script>
+{% endif %}
+</body>
+</html>
